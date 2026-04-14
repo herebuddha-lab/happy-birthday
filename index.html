@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Happy Birthday Sister 🎂</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+body{
+  background:#0b0f19;
+  color:#fff;
+  overflow-x:hidden;
+  scroll-behavior:smooth;
+}
+
+/* Floating particles background */
+canvas#bg{
+  position:fixed;
+  top:0;left:0;
+  z-index:-1;
+}
+
+/* Sections */
+section{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:40px;
+}
+
+/* Glass card */
+.glass{
+  backdrop-filter: blur(20px);
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:20px;
+  padding:40px;
+  max-width:900px;
+  box-shadow:0 0 40px rgba(0,0,0,0.5);
+}
+
+/* Headings */
+h1{
+  font-size:3.5rem;
+  margin-bottom:20px;
+  background:linear-gradient(90deg,#ff7eb3,#ff758c,#ffb199);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+h2{font-size:2rem;margin-bottom:20px}
+
+/* Button */
+.btn{
+  margin-top:30px;
+  padding:15px 30px;
+  border:none;
+  border-radius:30px;
+  background:linear-gradient(90deg,#ff7eb3,#ff758c);
+  color:#fff;
+  cursor:pointer;
+  font-size:1rem;
+  transition:0.3s;
+}
+.btn:hover{transform:scale(1.1)}
+
+/* Gallery */
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+}
+.gallery img{
+  width:100%;
+  border-radius:15px;
+  transition:0.5s;
+}
+.gallery img:hover{
+  transform:scale(1.1);
+}
+
+/* Typing text */
+#typing{
+  border-right:2px solid #fff;
+  white-space:nowrap;
+  overflow:hidden;
+}
+
+/* Confetti canvas */
+#confetti{
+  position:fixed;
+  top:0;left:0;
+  pointer-events:none;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="bg"></canvas>
+<canvas id="confetti"></canvas>
+
+<!-- Section 1: Intro -->
+<section>
+  <div class="glass">
+    <h1>Happy Birthday, My Dear Sister 💖</h1>
+    <h2 id="typing"></h2>
+    <button class="btn" onclick="scrollToNext()">Begin the Journey</button>
+  </div>
+</section>
+
+<!-- Section 2: Message -->
+<section>
+  <div class="glass">
+    <h2>A Special Message For You</h2>
+    <p style="line-height:1.8;font-size:1.1rem">
+      You are not just my sister, you are my forever friend, my supporter,
+      and my inspiration. Your smile lights up every room and your heart
+      is filled with kindness. On this special day, I wish you endless joy,
+      success, and love. May every dream you see come true. 🎉
+    </p>
+  </div>
+</section>
+
+<!-- Section 3: Gallery -->
+<section>
+  <div class="glass">
+    <h2>Beautiful Memories</h2>
+    <div class="gallery">
+      <!-- Replace with your images -->
+      <img src="https://picsum.photos/300/300?1"/>
+      <img src="https://picsum.photos/300/300?2"/>
+      <img src="https://picsum.photos/300/300?3"/>
+      <img src="https://picsum.photos/300/300?4"/>
+    </div>
+  </div>
+</section>
+
+<!-- Section 4: Surprise -->
+<section>
+  <div class="glass">
+    <h2>Click for a Surprise 🎁</h2>
+    <button class="btn" onclick="startConfetti()">Celebrate!</button>
+  </div>
+</section>
+
+<!-- Music -->
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_3e3b9b07fd.mp3" type="audio/mpeg">
+</audio>
+<button class="btn" style="position:fixed;bottom:20px;right:20px" onclick="toggleMusic()">🎵</button>
+
+<script>
+// Typing animation
+const text = "Today the world became brighter because you were born ✨";
+let i = 0;
+function typing(){
+  if(i < text.length){
+    document.getElementById("typing").innerHTML += text.charAt(i);
+    i++;
+    setTimeout(typing, 50);
+  }
+}
+typing();
+
+// Scroll
+function scrollToNext(){
+  window.scrollTo({top: window.innerHeight, behavior:'smooth'});
+}
+
+// Music
+function toggleMusic(){
+  const music = document.getElementById('music');
+  music.paused ? music.play() : music.pause();
+}
+
+// Background particles
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+let particles=[];
+for(let i=0;i<100;i++){
+  particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2});
+}
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p=>{
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle="rgba(255,255,255,0.5)";
+    ctx.fill();
+    p.y += 0.3;
+    if(p.y>canvas.height) p.y=0;
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+
+// Confetti
+function startConfetti(){
+  const confetti = document.getElementById('confetti');
+  const cctx = confetti.getContext('2d');
+  confetti.width = innerWidth;
+  confetti.height = innerHeight;
+
+  let pieces = [];
+  for(let i=0;i<150;i++){
+    pieces.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*6+4,d:Math.random()*50});
+  }
+
+  function draw(){
+    cctx.clearRect(0,0,innerWidth,innerHeight);
+    pieces.forEach(p=>{
+      cctx.beginPath();
+      cctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      cctx.fillStyle="hsl("+Math.random()*360+",100%,50%)";
+      cctx.fill();
+      p.y += 2;
+      if(p.y>innerHeight) p.y=0;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+</script>
+
+</body>
+</html>
